@@ -40,6 +40,7 @@ func randomGroup(groupList [][]string) ([][]string, error) {
 	return nil, nil
 }
 
+// 没解决【两人队、三人队各自的队伍数均不得少于2】
 // funcGroupList函数接收一个二维字符串数组GroupList作为参数，返回一个二维字符串数组result
 func funcGroupList(GroupList [][]string) [][]string {
 	// 初始化result为一个空的二维字符串数组
