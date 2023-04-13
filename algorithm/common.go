@@ -11,6 +11,12 @@ type ListNode struct {
 	Next *ListNode
 }
 
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 // 数组转链表
 func genLinkList(arr []int) *ListNode {
 	if len(arr) <= 0 {
