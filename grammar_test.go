@@ -29,7 +29,8 @@ func TestWaitGroup(t *testing.T) {
 	wg.Wait()
 }
 
-/***
+// TestChannel
+/*
 // 只读 channel
 var readOnlyChan <-chan int // channel 的类型为 int
 
@@ -68,8 +69,43 @@ func TestChannel(t *testing.T) {
 }
 
 func TestSlice(t *testing.T) {
-	slice := make([]int, 10)
-	log.Printf("1. slice: %v", slice)
+	slice := make([]int, 3, 3)
+	slice[0] = 0
 	slice[1] = 1
-	log.Printf("2. slice: %v", slice)
+	// slice 会根据 len 读取底层数组
+	log.Printf("len test, slice: %+v\n---\n", slice)
+	slice[2] = 2
+
+	log.Printf("before ap1, slice: %+v", slice)
+	// before ap1, slice: [0 1 2]
+	// 外层函数的 len 不变，ap1 函数内增加的 111 对外不可见，打印的还是 [0 1 2]
+	ap1(slice)
+	log.Printf("after ap1, slice: %+v", slice)
+	// 避免这种现象，可以使用指针类型传递
+	// 主函数读取到了 ap1Point 内因为扩容改变了的最新地址
+	log.Printf("before ap1Point, addr:%p, slice: %+v", slice, &slice)
+	ap1Point(&slice)
+	log.Printf("after  ap1Point, addr:%p, slice: %+v", slice, &slice)
+
+}
+func ap1(arr []int) {
+	arr = append(arr, 111)
+}
+func ap1Point(arr *[]int) {
+	*arr = append(*arr, 000, 111, 222)
+}
+
+func TestMap(t *testing.T) {
+	mp := make(map[string]int, 0)
+	mp["0"] = 0
+	mp["1"] = 1
+	mp["2"] = 2
+	log.Printf("mp: %v", mp)
+
+	/*
+		测试用 new 创建 map
+		语法检测通不过，会报错
+		mp1 := new(map[string]int)
+		mp1["0"] = 0
+	*/
 }
